@@ -1,0 +1,5 @@
+{
+  "name": "delete-target-index",
+  "operation-type": "delete-index",
+  "only-if-exists": true
+}

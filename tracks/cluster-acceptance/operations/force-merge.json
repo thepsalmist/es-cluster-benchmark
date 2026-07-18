@@ -1,0 +1,7 @@
+{
+  "name": "force-merge-target-index",
+  "operation-type": "force-merge",
+  "index": "{{ index_name | default('rally-acceptance') }}",
+  "max-num-segments": {{ force_merge_segments | default(1) }},
+  "request-timeout": 7200
+}

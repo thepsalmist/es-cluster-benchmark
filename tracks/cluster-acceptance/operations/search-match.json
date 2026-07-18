@@ -1,0 +1,13 @@
+{
+  "name": "search-match",
+  "operation-type": "search",
+  "index": "{{ index_name | default('rally-acceptance') }}",
+  "body": {
+    "size": 20,
+    "query": {
+      "match": {
+        "message": "timeout retry"
+      }
+    }
+  }
+}

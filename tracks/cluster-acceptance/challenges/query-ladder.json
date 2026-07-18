@@ -1,0 +1,51 @@
+{
+  "name": "query-ladder",
+  "description": "Runs the filtered search at stepped target throughputs (10, 25, 50 ops/s, then unthrottled) to find where latency degrades, then measures max throughput of each query shape. Requires an already-loaded index (run indexing-throughput first).",
+  "schedule": [
+    {
+      "name": "filtered-10-ops",
+      "operation": "search-filtered",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }},
+      "target-throughput": 10
+    },
+    {
+      "name": "filtered-25-ops",
+      "operation": "search-filtered",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }},
+      "target-throughput": 25
+    },
+    {
+      "name": "filtered-50-ops",
+      "operation": "search-filtered",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }},
+      "target-throughput": 50
+    },
+    {
+      "name": "filtered-unthrottled",
+      "operation": "search-filtered",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }}
+    },
+    {
+      "name": "match-unthrottled",
+      "operation": "search-match",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }}
+    },
+    {
+      "name": "aggs-unthrottled",
+      "operation": "search-aggs",
+      "clients": {{ search_clients | default(2) }},
+      "warmup-iterations": {{ ladder_warmup_iterations | default(20) }},
+      "iterations": {{ ladder_iterations | default(100) }}
+    }
+  ]
+}

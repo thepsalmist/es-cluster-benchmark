@@ -1,0 +1,34 @@
+{
+  "name": "search-filtered",
+  "operation-type": "search",
+  "index": "{{ index_name | default('rally-acceptance') }}",
+  "body": {
+    "size": 20,
+    "query": {
+      "bool": {
+        "filter": [
+          {
+            "terms": {
+              "service": ["svc-auth", "svc-billing", "svc-search"]
+            }
+          },
+          {
+            "range": {
+              "@timestamp": {
+                "gte": "{{ query_date_gte | default('2026-01-15') }}",
+                "lte": "{{ query_date_lte | default('2026-03-15') }}"
+              }
+            }
+          }
+        ],
+        "must": [
+          {
+            "match": {
+              "message": "connection"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

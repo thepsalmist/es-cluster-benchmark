@@ -1,0 +1,9 @@
+{
+  "name": "wait-for-index-health",
+  "operation-type": "cluster-health",
+  "index": "{{ index_name | default('rally-acceptance') }}",
+  "request-params": {
+    "wait_for_status": "{{ cluster_health | default('green') }}",
+    "timeout": "60s"
+  }
+}

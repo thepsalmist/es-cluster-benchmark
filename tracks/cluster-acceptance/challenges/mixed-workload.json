@@ -1,0 +1,44 @@
+{
+  "name": "mixed-workload",
+  "description": "Delete/recreate the target index, then bulk-load it while throttled searches run concurrently. Measures indexing throughput and query latency under contention; the challenge ends when the bulk load completes.",
+  "schedule": [
+    {
+      "operation": "delete-target-index"
+    },
+    {
+      "operation": "create-target-index"
+    },
+    {
+      "operation": "wait-for-index-health"
+    },
+    {
+      "parallel": {
+        "completed-by": "mixed-bulk",
+        "tasks": [
+          {
+            "name": "mixed-bulk",
+            "operation": "bulk-index",
+            "clients": {{ bulk_clients | default(2) }}
+          },
+          {
+            "name": "mixed-search-filtered",
+            "operation": "search-filtered",
+            "clients": {{ search_clients | default(2) }},
+            "target-throughput": {{ mixed_search_throughput | default(20) }},
+            "time-period": 7200
+          },
+          {
+            "name": "mixed-search-aggs",
+            "operation": "search-aggs",
+            "clients": 1,
+            "target-throughput": {{ mixed_aggs_throughput | default(5) }},
+            "time-period": 7200
+          }
+        ]
+      }
+    },
+    {
+      "operation": "refresh-target-index"
+    }
+  ]
+}

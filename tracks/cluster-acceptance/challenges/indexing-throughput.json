@@ -1,0 +1,26 @@
+{
+  "name": "indexing-throughput",
+  "default": true,
+  "description": "Delete/recreate the target index, bulk-load the full corpus with parallel clients, then refresh and force-merge. Measures sustained indexing throughput.",
+  "schedule": [
+    {
+      "operation": "delete-target-index"
+    },
+    {
+      "operation": "create-target-index"
+    },
+    {
+      "operation": "wait-for-index-health"
+    },
+    {
+      "operation": "bulk-index",
+      "clients": {{ bulk_clients | default(2) }}
+    },
+    {
+      "operation": "refresh-target-index"
+    },
+    {
+      "operation": "force-merge-target-index"
+    }
+  ]
+}

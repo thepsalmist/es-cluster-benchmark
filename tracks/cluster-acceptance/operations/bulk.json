@@ -1,0 +1,5 @@
+{
+  "name": "bulk-index",
+  "operation-type": "bulk",
+  "bulk-size": {{ bulk_size | default(1000) }}
+}

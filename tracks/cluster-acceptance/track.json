@@ -1,0 +1,29 @@
+{% import "rally.helpers" as rally with context %}
+{
+  "version": 2,
+  "description": "Cluster acceptance benchmark: indexing throughput, a query latency ladder, and a mixed read/write workload against a freshly provisioned Elasticsearch cluster",
+  "indices": [
+    {
+      "name": "{{ index_name | default('rally-acceptance') }}",
+      "body": "index-body.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "synthetic-logs",
+      "documents": [
+        {
+          "source-file": "documents.json",
+          "document-count": {{ corpus_docs | default(100000) }},
+          "target-index": "{{ index_name | default('rally-acceptance') }}"
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ rally.collect(parts="operations/*.json") }}
+  ],
+  "challenges": [
+    {{ rally.collect(parts="challenges/*.json") }}
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "name": "refresh-target-index",
+  "operation-type": "refresh",
+  "index": "{{ index_name | default('rally-acceptance') }}"
+}
