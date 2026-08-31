@@ -24,13 +24,18 @@ workload against a freshly provisioned cluster.
   track's `indices` declaration — a `body` inlined on the `create-index`
   operation is ignored when the index is declared in the track
 - `run_benchmark.sh` — runs one challenge via the `elastic/rally` Docker
-  image; computes `corpus_docs` from the corpus file and passes it as a
-  track param
+  image, pinned to the version that produced `results/`; computes
+  `corpus_docs` from the corpus file and passes it as a track param.
+  `CLIENT_OPTIONS` reaches Rally as `--client-options` (default `timeout:60`),
+  and `CA_CERT` is mounted read-only at `/rally/ca.crt` and appended to
+  `CLIENT_OPTIONS` as `ca_certs`
 
 ## Hard constraints
 
-- Rally runs only via the official `elastic/rally` Docker image. Never
-  install Rally or its Python dependencies locally.
+- Rally runs only via the official `elastic/rally` Docker image, pinned to an
+  explicit version tag. Never install Rally or its Python dependencies
+  locally, and never loosen the tag back to `latest`: the committed `results/`
+  are only reproducible against the version that produced them.
 - **This harness is destructive by design, but only to its own index**: the
   write challenges delete/recreate `{{ index_name }}` (default
   `rally-acceptance`). It must never touch any other index, template, or
