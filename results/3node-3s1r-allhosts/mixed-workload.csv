@@ -1,0 +1,82 @@
+Metric,Task,Value,Unit
+Cumulative indexing time of primary shards,,0.10378333333333334,min
+Min cumulative indexing time across primary shards,,0.03308333333333333,min
+Median cumulative indexing time across primary shards,,0.0336,min
+Max cumulative indexing time across primary shards,,0.0371,min
+Cumulative indexing throttle time of primary shards,,0.0,min
+Min cumulative indexing throttle time across primary shards,,0.0,min
+Median cumulative indexing throttle time across primary shards,,0.0,min
+Max cumulative indexing throttle time across primary shards,,0.0,min
+Cumulative merge time of primary shards,,0.0,min
+Cumulative merge count of primary shards,,0,
+Min cumulative merge time across primary shards,,0.0,min
+Median cumulative merge time across primary shards,,0.0,min
+Max cumulative merge time across primary shards,,0.0,min
+Cumulative merge throttle time of primary shards,,0.0,min
+Min cumulative merge throttle time across primary shards,,0.0,min
+Median cumulative merge throttle time across primary shards,,0.0,min
+Max cumulative merge throttle time across primary shards,,0.0,min
+Cumulative refresh time of primary shards,,0.024483333333333333,min
+Cumulative refresh count of primary shards,,39,
+Min cumulative refresh time across primary shards,,0.006583333333333333,min
+Median cumulative refresh time across primary shards,,0.00845,min
+Max cumulative refresh time across primary shards,,0.00945,min
+Cumulative flush time of primary shards,,0.0,min
+Cumulative flush count of primary shards,,0,
+Min cumulative flush time across primary shards,,0.0,min
+Median cumulative flush time across primary shards,,0.0,min
+Max cumulative flush time across primary shards,,0.0,min
+Total Young Gen GC time,,0.259,s
+Total Young Gen GC count,,5,
+Total Old Gen GC time,,0.0,s
+Total Old Gen GC count,,0,
+Dataset size,,0.028270993381738663,GB
+Store size,,0.028270993381738663,GB
+Translog size,,0.058160604909062386,GB
+Heap used for segments,,0.0,MB
+Heap used for doc values,,0.0,MB
+Heap used for terms,,0.0,MB
+Heap used for norms,,0.0,MB
+Heap used for points,,0.0,MB
+Heap used for stored fields,,0.0,MB
+Segment count,,31,
+Total Ingest Pipeline count,,0,
+Total Ingest Pipeline time,,0.0,s
+Total Ingest Pipeline failed,,0,
+Min Throughput,mixed-bulk,18497.74,docs/s
+Mean Throughput,mixed-bulk,19438.41,docs/s
+Median Throughput,mixed-bulk,19297.10,docs/s
+Max Throughput,mixed-bulk,20619.34,docs/s
+50th percentile latency,mixed-bulk,80.2934135,ms
+90th percentile latency,mixed-bulk,136.45781550000007,ms
+99th percentile latency,mixed-bulk,179.39691599000065,ms
+100th percentile latency,mixed-bulk,307.218983,ms
+50th percentile service time,mixed-bulk,80.2934135,ms
+90th percentile service time,mixed-bulk,136.45781550000007,ms
+99th percentile service time,mixed-bulk,179.39691599000065,ms
+100th percentile service time,mixed-bulk,307.218983,ms
+error rate,mixed-bulk,0.00,%
+Min Throughput,mixed-search-filtered,20.07,ops/s
+Mean Throughput,mixed-search-filtered,20.19,ops/s
+Median Throughput,mixed-search-filtered,20.12,ops/s
+Max Throughput,mixed-search-filtered,20.63,ops/s
+50th percentile latency,mixed-search-filtered,17.8175335,ms
+90th percentile latency,mixed-search-filtered,46.355559800000044,ms
+99th percentile latency,mixed-search-filtered,80.36699492,ms
+100th percentile latency,mixed-search-filtered,83.075101,ms
+50th percentile service time,mixed-search-filtered,16.1664025,ms
+90th percentile service time,mixed-search-filtered,42.71961900000001,ms
+99th percentile service time,mixed-search-filtered,73.82177931000001,ms
+100th percentile service time,mixed-search-filtered,81.935767,ms
+error rate,mixed-search-filtered,0.00,%
+Min Throughput,mixed-search-aggs,5.08,ops/s
+Mean Throughput,mixed-search-aggs,5.24,ops/s
+Median Throughput,mixed-search-aggs,5.15,ops/s
+Max Throughput,mixed-search-aggs,5.82,ops/s
+50th percentile latency,mixed-search-aggs,19.3498715,ms
+90th percentile latency,mixed-search-aggs,62.49736359999999,ms
+100th percentile latency,mixed-search-aggs,96.921595,ms
+50th percentile service time,mixed-search-aggs,16.521278,ms
+90th percentile service time,mixed-search-aggs,60.6795355,ms
+100th percentile service time,mixed-search-aggs,95.109979,ms
+error rate,mixed-search-aggs,0.00,%
