@@ -11,9 +11,9 @@ real traffic on new hardware:
 3. **Mixed workload** — query latency while the cluster is simultaneously
    indexing, which is what production actually looks like.
 
-Everything runs through the official `elastic/rally` Docker image — no local
-Python or Rally installation. Clone, generate the dataset, point it at your
-cluster.
+Everything runs through the official `elastic/rally` Docker image, pinned to
+version 2.13.0, so there is no local Python or Rally installation. Clone,
+generate the dataset, point it at your cluster.
 
 > **⚠️ This benchmark is destructive by design.** The `indexing-throughput`
 > and `mixed-workload` challenges **delete and recreate their target index**
@@ -90,6 +90,42 @@ Two methodology rules for numbers you can trust:
 
 Repeat each challenge at least 3 times and compare runs before drawing
 conclusions — single benchmark runs have natural variance.
+
+### TLS and authentication
+
+Most real clusters have both. Pass Rally's client options through
+`CLIENT_OPTIONS`, and point `CA_CERT` at the certificate authority that signed
+the cluster's HTTP certificate:
+
+```bash
+ES_HOST=https://new-cluster:9200 CONFIRM_DESTRUCTIVE=yes \
+CA_CERT=./http_ca.crt \
+CLIENT_OPTIONS="timeout:60,basic_auth_user:elastic,basic_auth_password:${ES_PASSWORD}" \
+./run_benchmark.sh
+```
+
+API keys work the same way. Use the `encoded` field from the create-API-key
+response:
+
+```bash
+CLIENT_OPTIONS="timeout:60,api_key:${ES_API_KEY}"
+```
+
+| Variable | Effect |
+|---|---|
+| `CLIENT_OPTIONS` | Reaches Rally as `--client-options`. Defaults to `timeout:60`; setting it replaces that default, so keep `timeout:60` unless you mean to change it |
+| `CA_CERT` | Path to a PEM certificate authority. Mounted read-only into the container at `/rally/ca.crt` and appended to `CLIENT_OPTIONS` as `ca_certs`, so do not set `ca_certs` yourself |
+
+On a cluster using Elasticsearch's auto-generated certificates, the HTTP CA
+lives at `config/certs/http_ca.crt` on any node. Copy it out and point
+`CA_CERT` at the copy.
+
+Two things worth knowing. Omitting the CA fails fast and legibly, with
+`CERTIFICATE_VERIFY_FAILED ... unable to get local issuer certificate`, rather
+than hanging. And credentials passed this way are visible in the `docker run`
+command line while the race is in flight, so read them from the environment
+instead of typing them inline, and take that into account on a shared load
+generator.
 
 ## The challenges
 
@@ -197,6 +233,7 @@ Rally and Elasticsearch benchmarking terms used in this repo:
 
 ## Requirements
 
-- Docker (the `elastic/rally` image does all Rally work; `generate_corpus.sh`
-  uses the system `python3`, standard library only)
+- Docker (Rally runs entirely inside `elastic/rally:2.13.0`, pinned so the
+  committed `results/` stay reproducible; `generate_corpus.sh` uses the system
+  `python3`, standard library only)
 - Network access from the machine running Rally to the target cluster
