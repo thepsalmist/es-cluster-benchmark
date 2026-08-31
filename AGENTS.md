@@ -7,6 +7,12 @@ workload against a freshly provisioned cluster.
 ## Layout
 
 - `docker-compose.yml` — single-node ES 8.17.1 for local self-testing
+- `docker-compose.cluster.yml` — three-node ES 8.17.1 on one host (separate
+  compose project; both files bind 9200, so only one can run at a time).
+  Co-located nodes share the host's CPU, disk and page cache: use it for shard
+  layout and harness checks, never to judge hardware
+- `results/` — committed CSVs from a local verification run, with
+  `results/README.md` documenting the configurations and their caveats
 - `scripts/generate_corpus.sh` — generates the synthetic JSON Lines corpus
   into `tracks/cluster-acceptance/documents.json` (gitignored; deterministic
   via fixed random seed)

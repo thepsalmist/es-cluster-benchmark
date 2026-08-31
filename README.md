@@ -39,6 +39,38 @@ docker compose down                # tear down when finished
 Each run writes a CSV report to `./benchmarks/` and full Rally logs to
 `./logs/`.
 
+## Multi-node self-test (still one host)
+
+`docker-compose.cluster.yml` brings up three nodes — `es01`, `es02`, `es03` on
+ports 9200, 9201 and 9202 — so you can exercise shard and replica layouts, and
+spread the load across nodes, without a real cluster:
+
+```bash
+docker compose down                                  # free port 9200 first
+docker compose -f docker-compose.cluster.yml up -d
+
+CHALLENGE=indexing-throughput \
+ES_HOST=http://host.docker.internal:9200,http://host.docker.internal:9201,http://host.docker.internal:9202 \
+CONFIRM_DESTRUCTIVE=yes \
+TRACK_PARAMS="number_of_shards:3,number_of_replicas:1" \
+./run_benchmark.sh
+
+docker compose -f docker-compose.cluster.yml down    # add -v to drop the data
+```
+
+Passing more than one host makes `ES_HOST` non-default, so the destructive
+guard applies and `CONFIRM_DESTRUCTIVE=yes` is required.
+
+The two compose files both bind port 9200 and run as separate compose
+projects, so bring one down before starting the other.
+
+> **A three-node cluster on one machine measures that machine.** The nodes
+> share its cores, its disk and its page cache, and the load generator
+> competes with all of them. Use this to check that a shard layout works and
+> that the harness does what you expect — never to decide whether hardware is
+> acceptable. `results/` records what this looks like in practice, including
+> how much a cold first run understates throughput.
+
 ## Against a real (new) cluster
 
 ```bash
@@ -113,6 +145,7 @@ write down what "good enough" means for *your* workload — for example:
 
 ```
 docker-compose.yml         # Single-node ES 8.17.1 for local self-testing
+docker-compose.cluster.yml # Three-node ES 8.17.1 on one host
 scripts/generate_corpus.sh # Generates the synthetic corpus (JSON Lines)
 tracks/cluster-acceptance/
   track.json               # Rally track: index, corpus, operations, challenges
@@ -121,6 +154,7 @@ tracks/cluster-acceptance/
   challenges/              # The three challenge schedules
   documents.json           # Generated corpus (not committed)
 run_benchmark.sh           # Runs a challenge via the elastic/rally Docker image
+results/                   # Committed CSVs from a local verification run
 ```
 
 ## Glossary
